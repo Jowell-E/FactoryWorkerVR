@@ -523,21 +523,7 @@ namespace Valve.VR.InteractionSystem
 
 			return source.OrderBy( x => x ).ElementAt( count / 2 );
 		}
-
-
-		//-------------------------------------------------
-		public static void ForEach<T>( this IEnumerable<T> source, Action<T> action )
-		{
-			if ( source == null )
-			{
-				throw new ArgumentException( "Argument cannot be null.", "source" );
-			}
-
-			foreach ( T value in source )
-			{
-				action( value );
-			}
-		}
+			
 
 
 		//-------------------------------------------------
