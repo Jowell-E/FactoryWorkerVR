@@ -19,7 +19,15 @@ public class ButtonFunctions : MonoBehaviour {
 	}
 
 	public void ShootObject(){
-		GameObject obj = (GameObject)Instantiate (cube, pos, Quaternion.identity);
-		obj.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 1, 1) * force;
+		int rand = Random.Range (0, 2);
+		if (rand == 0) {
+			GameObject obj = (GameObject)Instantiate (cube, pos, Quaternion.identity);
+			obj.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 1, 1) * force;
+			obj.name = cube.name;
+		} else {
+			GameObject obj = (GameObject)Instantiate (sphere, pos, Quaternion.identity);
+			obj.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 1, 1) * force;
+			obj.name = sphere.name;
+		}
 	}
 }

@@ -26,7 +26,7 @@ public class VRButton : VRInteractable {
 
 	void OnTriggerEnter(Collider _collider)
 	{	
-		if (Interactable == true && _collider.name == "Switch") { // If the button hit's the contact switch it has been pressed
+		if (Interactable == true && (_collider.name == "Switch" || _collider.tag == "Hand")) { // If the button hit's the contact switch it has been pressed
 			TriggerButton ();
 		}
 	}
