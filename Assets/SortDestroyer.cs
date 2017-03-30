@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class SortDestroyer : MonoBehaviour {
 
-	public string sortName;
+	public string color;
+	public string audioName;
+	public string obj;
+	public bool defective;
 	// Use this for initialization
 	void Start () {
 		
@@ -17,13 +20,37 @@ public class SortDestroyer : MonoBehaviour {
 
 	void OnCollisionEnter(Collision other){
 		if (other.gameObject.tag == "Sortable") {
-			if (other.gameObject.name == sortName) {
+			if (color != "") {
+				if (other.gameObject.GetComponent<ObjectProperties> ().color == color) {
+					Destroy (other.gameObject);
+					GameController.Instance.Sort (other.gameObject);
+					return;
+				}
+			}
+			if (audioName != ""){
+				if (other.gameObject.GetComponent<ObjectProperties> ().audioName == audioName) {
 				Destroy (other.gameObject);
 				GameController.Instance.Sort (other.gameObject);
 				return;
+				}
 			}
+			if (obj != ""){
+				if (other.gameObject.GetComponent<ObjectProperties> ().obj == obj) {
+				Destroy (other.gameObject);
+				GameController.Instance.Sort (other.gameObject);
+				return;
+				}
+			}
+			if (defective != false){
+				if (other.gameObject.GetComponent<ObjectProperties> ().defective == defective) {
+				Destroy (other.gameObject);
+				GameController.Instance.Sort (other.gameObject);
+				return;
+				}
+			}
+
+			Destroy (other.gameObject);
+			GameController.Instance.SortedWrong ();
 		}
-		GameController.Instance.SortedWrong ();
-		//otherwise do something else here
 	}
 }

@@ -8,14 +8,36 @@ public class ButtonFunctions : MonoBehaviour {
 	public GameObject sphere;
 	public int force;
 	public Vector3 pos;
+
+	public float waveTime;
+	public float fireRate;
+	float timeLimit;
 	// Use this for initialization
 	void Start () {
 		
 	}
-	
+
+	public bool shooting = false;
 	// Update is called once per frame
 	void Update () {
-		
+		if (shooting) {
+			timeLimit -= Time.deltaTime;
+
+			if (timeLimit <= 0) {
+				shooting = false;
+				CancelInvoke ("ShootObject");
+			}
+		}
+
+
+	}
+
+	public void StartShooting(){
+		if (!shooting) {
+			InvokeRepeating ("ShootObject", 0f, fireRate);
+			shooting = true;
+			timeLimit = waveTime;
+		}
 	}
 
 	public void ShootObject(){
