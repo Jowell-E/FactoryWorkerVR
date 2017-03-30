@@ -47,19 +47,22 @@ public class GameController : MonoBehaviour {
 	}
 
 	public GameObject[] containers;
+	public bool GetRandomRules;
 	void MakeSortingRules(){
 		//4 rules generated per container
-		foreach (GameObject container in containers) {
-			int ruleNumber = Random.Range (0, 4);
-			if (ruleNumber == 0) {
-				container.GetComponentInChildren<SortDestroyer> ().color = RandomColor ();
-			} else if (ruleNumber == 1) {
-				container.GetComponentInChildren<SortDestroyer> ().obj = RandomObj ();
-			} else if (ruleNumber == 2) {
-				container.GetComponentInChildren<SortDestroyer> ().audioName = RandomAudio ();
-			} else if (ruleNumber == 3) {
-				container.GetComponentInChildren<SortDestroyer> ().defective = RandomDefect ();
-			} 
+		if (GetRandomRules) {
+			foreach (GameObject container in containers) {
+				int ruleNumber = Random.Range (0, 4);
+				if (ruleNumber == 0) {
+					container.GetComponentInChildren<SortDestroyer> ().color = RandomColor ();
+				} else if (ruleNumber == 1) {
+					container.GetComponentInChildren<SortDestroyer> ().obj = RandomObj ();
+				} else if (ruleNumber == 2) {
+					container.GetComponentInChildren<SortDestroyer> ().audioName = RandomAudio ();
+				} else if (ruleNumber == 3) {
+					container.GetComponentInChildren<SortDestroyer> ().defective = RandomDefect ();
+				} 
+			}
 		}
 	}
 
