@@ -27,6 +27,7 @@ namespace Valve.VR.InteractionSystem
 			if ( onAttachedToHand != null )
 			{
 				onAttachedToHand.Invoke( hand );
+
 			}
 		}
 
