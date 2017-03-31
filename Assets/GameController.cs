@@ -32,18 +32,21 @@ public class GameController : MonoBehaviour {
 	void Start () {
 		MakeObjectList ();
 		MakeSortingRules ();
+		UpdateInstructions ();
 	}
 
 	public int amountOfObjects;
 	public GameObject[] objPool;
 	public List<GameObject> objectToSort = new List<GameObject>();
+	public bool GetRandomObjects;
 	void MakeObjectList(){
 		//3 different objects 
-		for (int i = 0; i < amountOfObjects; i++) {
-			int randomObjectNumber = Random.Range (0, objPool.Length);
-			objectToSort.Add (objPool [randomObjectNumber]);
+		if (GetRandomObjects) {
+			for (int i = 0; i < amountOfObjects; i++) {
+				int randomObjectNumber = Random.Range (0, objPool.Length);
+				objectToSort.Add (objPool [randomObjectNumber]);
+			}
 		}
-
 	}
 
 	public GameObject[] containers;
@@ -68,7 +71,7 @@ public class GameController : MonoBehaviour {
 
 	public int amountOfColors;
 	string RandomColor(){
-		int randInt = Random.Range (0, 5);
+		int randInt = Random.Range (0, 4);
 		if (randInt == 0) {
 			return "Red";
 		} else if (randInt == 1) {
@@ -112,6 +115,31 @@ public class GameController : MonoBehaviour {
 			return true;
 		} 
 		return false;
+	}
+
+	public GameObject instructions;
+	void UpdateInstructions(){
+		TextMesh text = instructions.GetComponent<TextMesh> ();
+		text.text = 
+			"Hello World, \n" +
+			"Welcome to the Factory! \n" +
+			"Press the button to begin! \n"; 
+		for (int i = 0; i < containers.Length; i++) {
+			text.text += "\n" + (i+1).ToString () + ": "; 
+			SortDestroyer sort = containers[i].GetComponentInChildren<SortDestroyer> ();
+			if (sort.color != "") {
+				text.text += sort.color + ". ";
+			}
+			if (sort.audioName != ""){
+				text.text += sort.audioName + ". ";
+			}
+			if (sort.obj != ""){
+				text.text += sort.obj + ". ";
+			}
+			if (sort.defective != false){
+				text.text += sort.defective.ToString() + ". ";
+			}
+		}
 	}
 
 	// Update is called once per frame

@@ -6,7 +6,8 @@ public class ButtonFunctions : MonoBehaviour {
 
 	public GameObject cube;
 	public GameObject sphere;
-	public int force;
+	public float minForce;
+	public float maxForce;
 	public Vector3 pos;
 
 	public float waveTime;
@@ -41,15 +42,10 @@ public class ButtonFunctions : MonoBehaviour {
 	}
 
 	public void ShootObject(){
-		int rand = Random.Range (0, 2);
-		if (rand == 0) {
-			GameObject obj = (GameObject)Instantiate (cube, pos, Quaternion.identity);
-			obj.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 1, 1) * force;
-			obj.name = cube.name;
-		} else {
-			GameObject obj = (GameObject)Instantiate (sphere, pos, Quaternion.identity);
-			obj.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 1, 1) * force;
-			obj.name = sphere.name;
-		}
+		int rand = Random.Range (0, GameController.Instance.objectToSort.Count);
+		GameObject obj = (GameObject)Instantiate (GameController.Instance.objectToSort[rand], pos, Quaternion.identity);
+		float force = Random.Range (minForce, maxForce);
+		obj.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 1, 1) * force;
+		obj.name = GameController.Instance.objectToSort[rand].name;
 	}
 }

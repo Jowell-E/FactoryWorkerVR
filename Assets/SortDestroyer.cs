@@ -18,6 +18,7 @@ public class SortDestroyer : MonoBehaviour {
 		
 	}
 
+
 	void OnCollisionEnter(Collision other){
 		if (other.gameObject.tag == "Sortable") {
 			if (color != "") {
