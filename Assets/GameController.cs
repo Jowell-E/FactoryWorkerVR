@@ -26,8 +26,10 @@ public class GameController : MonoBehaviour {
 
 
 	public Text scoreDisplay;
-	public int score = 0;
-	public int scoreBonus = 10;
+	public float score = 0;
+	public float scoreBonus = .5f;
+	public float scoreWrongBonus = .75f;
+	public float morale = 0;
 	// Use this for initialization
 	void Start () {
 		MakeObjectList ();
@@ -147,14 +149,22 @@ public class GameController : MonoBehaviour {
 		
 	}
 
+	int sortCount = 0;
 	public void Sort(GameObject obj){
+		sortCount += 1;
 		score += scoreBonus;
 		scoreDisplay.text = score.ToString();
 
 	}
 
+	int sortWrongCount = 0;
 	public void SortedWrong (){
-		score -= scoreBonus;
+		sortWrongCount += 1;
+		if (sortWrongCount == 20) {
+			morale -= .5f;
+			sortWrongCount = 0;
+		}
+		score -= scoreWrongBonus;
 		scoreDisplay.text = score.ToString ();
 	}
 }
