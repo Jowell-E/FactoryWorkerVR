@@ -18,4 +18,12 @@ public class ConveyerBeltBehavior : MonoBehaviour {
 			texture.mainTextureOffset = new Vector2(texture.mainTextureOffset.x + moveSpeed * Time.deltaTime, 0);
 		}
 	}
+
+	void OnCollisionStay(Collision obj ){
+		if (obj.gameObject.tag == "Sortable") {
+			
+			obj.transform.Translate (transform.right * moveSpeed * Time.deltaTime);
+		}
+	}
+
 }
