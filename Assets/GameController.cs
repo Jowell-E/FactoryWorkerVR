@@ -121,7 +121,7 @@ public class GameController : MonoBehaviour {
 
 	public GameObject instructions;
 	void UpdateInstructions(){
-		TextMesh text = instructions.GetComponent<TextMesh> ();
+		TextMesh text = instructions.GetComponentInChildren<TextMesh> ();
 		text.text = 
 			"Hello World, \n" +
 			"Welcome to the Factory! \n" +

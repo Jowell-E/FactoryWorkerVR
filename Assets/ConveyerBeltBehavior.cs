@@ -22,7 +22,7 @@ public class ConveyerBeltBehavior : MonoBehaviour {
 	void OnCollisionStay(Collision obj ){
 		if (obj.gameObject.tag == "Sortable") {
 			
-			obj.transform.Translate (transform.right * moveSpeed * Time.deltaTime);
+			obj.transform.Translate (Vector3.right * moveSpeed * Time.deltaTime, transform);
 		}
 	}
 
