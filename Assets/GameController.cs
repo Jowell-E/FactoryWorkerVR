@@ -127,7 +127,13 @@ public class GameController : MonoBehaviour {
 			"Welcome to the Factory! \n" +
 			"Press the button to begin! \n"; 
 		for (int i = 0; i < containers.Length; i++) {
-			text.text += "\n" + (i+1).ToString () + ": "; 
+			if (i == 0) {
+				text.text += "\n" + "Green" + ": "; 
+			} else if (i == 1) {
+				text.text += "\n" + "Red" + ": "; 
+			} else if (i == 2) {
+				text.text += "\n" + "Blue" + ": "; 
+			}
 			SortDestroyer sort = containers[i].GetComponentInChildren<SortDestroyer> ();
 			if (sort.color != "") {
 				text.text += sort.color + ". ";
