@@ -16,7 +16,8 @@ public class ButtonFunctions : MonoBehaviour {
 	float timeLimit;
 	// Use this for initialization
 	void Start () {
-		
+		shooting = false;
+		CancelInvoke ();
 	}
 
 	public Text waveTimer;
@@ -34,6 +35,7 @@ public class ButtonFunctions : MonoBehaviour {
 			if (timeLimit <= 0) {
 				shooting = false;
 				CancelInvoke ("ShootObject");
+				timeLimit = 60f;
 			}
 		}
 

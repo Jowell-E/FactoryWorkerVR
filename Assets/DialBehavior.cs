@@ -12,7 +12,6 @@ public class DialBehavior : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.Log (transform.localRotation.y);
 		if (transform.localRotation.y > 0) {
 			if (transform.localRotation.y > .45f) {
 				machine.fireRate = .5f;
@@ -27,6 +26,16 @@ public class DialBehavior : MonoBehaviour {
 			}
 		} else {
             machine.fireRate = 2;
+		}
+	}
+
+	public float speed;
+	void OnTriggerStay(Collider other){
+		if (other.tag == "Hand") {
+			Vector3 lookPos = other.transform.position - transform.position;
+			lookPos.y = 0;
+			Quaternion rotation = Quaternion.LookRotation(lookPos);
+			transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * speed);
 		}
 	}
 }
