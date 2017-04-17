@@ -150,9 +150,29 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	public GameObject mark;
 	// Update is called once per frame
-	void Update () {
-		
+	void UpdateMorale () {
+		morale = Mathf.Clamp (morale, 0, 100f);
+		if (morale < 10) {
+			mark.transform.position = new Vector3 (mark.transform.position.x, 1.46f, -0.203f);
+		} else if (morale < 20) {
+			mark.transform.position = new Vector3 (mark.transform.position.x - .07f, 1.46f, -0.203f);
+		} else if (morale < 30) {
+			mark.transform.position = new Vector3 (mark.transform.position.x - .15f, 1.46f, -0.203f);
+		} else if (morale < 40) {
+			mark.transform.position = new Vector3 (mark.transform.position.x - .23f, 1.46f, -0.203f);
+		} else if (morale < 50) {
+			mark.transform.position = new Vector3 (mark.transform.position.x - .31f, 1.46f, -0.203f);
+		} else if (morale < 60) {
+			mark.transform.position = new Vector3 (mark.transform.position.x - .39f, 1.46f, -0.203f);
+		} else if (morale < 70) {
+			mark.transform.position = new Vector3 (mark.transform.position.x - .47f, 1.46f, -0.203f);
+		} else if (morale < 80) {
+			mark.transform.position = new Vector3 (mark.transform.position.x - .55f, 1.46f, -0.203f);
+		} else if (morale < 90) {
+			mark.transform.position = new Vector3 (mark.transform.position.x - .63f, 1.46f, -0.203f);
+		}
 	}
 
 	int sortCount = 0;
@@ -160,7 +180,7 @@ public class GameController : MonoBehaviour {
 		sortCount += 1;
 		score += scoreBonus;
 		scoreDisplay.text = score.ToString();
-
+		UpdateMorale ();
 	}
 
 	int sortWrongCount = 0;
@@ -172,5 +192,6 @@ public class GameController : MonoBehaviour {
 		}
 		score -= scoreWrongBonus;
 		scoreDisplay.text = score.ToString ();
+		UpdateMorale ();
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ButtonFunctions : MonoBehaviour {
 
@@ -18,11 +19,17 @@ public class ButtonFunctions : MonoBehaviour {
 		
 	}
 
+	public Text waveTimer;
 	public bool shooting = false;
 	// Update is called once per frame
 	void Update () {
 		if (shooting) {
 			timeLimit -= Time.deltaTime;
+
+			float minutes = Mathf.Floor (timeLimit / 60f);
+			float seconds = (timeLimit % 60);
+
+			waveTimer.text = string.Format ("{0:0}:{1:00}", minutes, seconds);
 
 			if (timeLimit <= 0) {
 				shooting = false;
@@ -38,6 +45,10 @@ public class ButtonFunctions : MonoBehaviour {
 			InvokeRepeating ("ShootObject", 0f, fireRate);
 			shooting = true;
 			timeLimit = waveTime;
+		} else {
+			shooting = false;
+			CancelInvoke ("ShootObject");
+			waveTime = timeLimit;
 		}
 	}
 
