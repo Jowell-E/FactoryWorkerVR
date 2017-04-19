@@ -78,6 +78,7 @@ public class VRButton : VRInteractable {
 
 	}
 
+
 //  This is just here as a reminder to call base. Will remove the need to do this in future versions
 //	void Update()
 //	{
