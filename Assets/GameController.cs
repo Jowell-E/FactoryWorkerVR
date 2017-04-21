@@ -24,7 +24,7 @@ public class GameController : MonoBehaviour {
 	}
 
 
-
+	public bool started = false;
 	public Text scoreDisplay;
 	public float score = 0;
 	public float scoreBonus = .5f;
@@ -35,7 +35,14 @@ public class GameController : MonoBehaviour {
 		MakeObjectList ();
 		MakeSortingRules ();
 		UpdateInstructions ();
+//		SteamVR_Fade.View (Color.black, 1f);
+//		Invoke ("WakeUp", 1f);
 	}
+
+	void WakeUp(){
+		SteamVR_Fade.View (Color.clear, 2f);
+	}
+
 
 	public int amountOfObjects;
 	public GameObject[] objPool;
@@ -155,23 +162,23 @@ public class GameController : MonoBehaviour {
 	void UpdateMorale () {
 		morale = Mathf.Clamp (morale, 0, 100f);
 		if (morale < 10) {
-			mark.transform.position = new Vector3 (mark.transform.position.x, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x, 1.46f, -0.203f);
 		} else if (morale < 20) {
-			mark.transform.position = new Vector3 (mark.transform.position.x - .07f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .07f, 1.46f, -0.203f);
 		} else if (morale < 30) {
-			mark.transform.position = new Vector3 (mark.transform.position.x - .15f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .15f, 1.46f, -0.203f);
 		} else if (morale < 40) {
-			mark.transform.position = new Vector3 (mark.transform.position.x - .23f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .23f, 1.46f, -0.203f);
 		} else if (morale < 50) {
-			mark.transform.position = new Vector3 (mark.transform.position.x - .31f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .31f, 1.46f, -0.203f);
 		} else if (morale < 60) {
-			mark.transform.position = new Vector3 (mark.transform.position.x - .39f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .39f, 1.46f, -0.203f);
 		} else if (morale < 70) {
-			mark.transform.position = new Vector3 (mark.transform.position.x - .47f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .47f, 1.46f, -0.203f);
 		} else if (morale < 80) {
-			mark.transform.position = new Vector3 (mark.transform.position.x - .55f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .55f, 1.46f, -0.203f);
 		} else if (morale < 90) {
-			mark.transform.position = new Vector3 (mark.transform.position.x - .63f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .63f, 1.46f, -0.203f);
 		}
 	}
 

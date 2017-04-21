@@ -13,17 +13,29 @@ public class ConveyerBeltBehavior : MonoBehaviour {
 
 	public bool moving = false;
 	public float moveSpeed;
-	void Update () {
+	void FixedUpdate () {
 		if (moving) {
-			texture.mainTextureOffset = new Vector2(texture.mainTextureOffset.x + moveSpeed * Time.deltaTime, 0);
+			texture.mainTextureOffset = new Vector2(texture.mainTextureOffset.x + (moveSpeed / 4.5f) * Time.deltaTime, 0);
 		}
 	}
 
 	void OnCollisionStay(Collision obj ){
-		if (obj.gameObject.tag == "Sortable") {
-			
-			obj.transform.Translate (Vector3.right * moveSpeed * Time.deltaTime, transform);
+		if (moving) {
+			if (obj.gameObject.tag == "Sortable") {
+				obj.transform.Translate (Vector3.right * moveSpeed * Time.deltaTime, transform);
+			}
 		}
 	}
 
+	void OnTriggerStay (Collider obj){
+		if (moving) {
+			if (obj.gameObject.tag == "Player") {
+				if (moveSpeed > 0) {
+					obj.transform.parent.parent.transform.Translate (Vector3.right * (moveSpeed - 1f) * Time.deltaTime, transform);
+				} else {
+					obj.transform.parent.parent.transform.Translate (Vector3.right * (moveSpeed + 1f) * Time.deltaTime, transform);
+				}
+			}
+		}
+	}
 }
