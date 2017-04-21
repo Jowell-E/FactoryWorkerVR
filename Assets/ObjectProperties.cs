@@ -8,6 +8,7 @@ public class ObjectProperties : MonoBehaviour {
 	public string obj;
 	public string audioName;
 	public AudioClip audioClip;
+	public AudioClip[] audioClips;
 	public bool defective;
 
 	// Use this for initialization
