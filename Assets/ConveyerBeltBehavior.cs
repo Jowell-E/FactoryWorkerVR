@@ -16,6 +16,7 @@ public class ConveyerBeltBehavior : MonoBehaviour {
 	void FixedUpdate () {
 		if (moving) {
 			texture.mainTextureOffset = new Vector2(texture.mainTextureOffset.x + (moveSpeed / 4.5f) * Time.deltaTime, 0);
+			texture.SetTextureOffset("_BumpMap", new Vector2(texture.mainTextureOffset.x + (moveSpeed / 4.5f) * Time.deltaTime, 0));
 		}
 	}
 
