@@ -11,31 +11,24 @@ public class DialBehavior : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		if (transform.localRotation.y > 0) {
-			if (transform.localRotation.y > .45f) {
-				machine.fireRate = .5f;
+	void FixedUpdate () {
+		if (transform.localRotation.y > .5f) {
+			if (transform.localRotation.y > .75f) {
+				machine.fireRate = 1.5f;
 			} else {
 				machine.fireRate = 1;
 			}
-		} else if (transform.localRotation.y < 0) {
-			if (transform.localRotation.y < -.45f) {
-				machine.fireRate = 3;
+		} else if (transform.localRotation.y < .5f) {
+			if (transform.localRotation.y < .25f) {
+				machine.fireRate = 0;
+				GameController.Instance.GetComponent<ButtonFunctions> ().StopShooting ();
 			} else {
-				machine.fireRate = 2;
+				machine.fireRate = 2f;
+				GameController.Instance.GetComponent<ButtonFunctions> ().StartShooting ();
 			}
 		} else {
-            machine.fireRate = 2;
+            machine.fireRate = 0;
 		}
 	}
-
-	public float speed;
-	void OnTriggerStay(Collider other){
-		if (other.tag == "Hand") {
-			Vector3 lookPos = other.transform.position - transform.position;
-			lookPos.y = 0;
-			Quaternion rotation = Quaternion.LookRotation(lookPos);
-			transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * speed);
-		}
-	}
+		
 }

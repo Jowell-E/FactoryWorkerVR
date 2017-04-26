@@ -8,10 +8,14 @@ public class OnCollisionAudio : MonoBehaviour {
 	ObjectProperties obj;
 	Rigidbody rb;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		source = GetComponent<AudioSource> ();
 		obj = GetComponent<ObjectProperties> ();
 		rb = GetComponent<Rigidbody> ();
+	}
+
+	void Start(){
+		AudioController.instance.PlaySingle (GameController.Instance.fallingSFX, AudioController.instance.cannonSource);
 	}
 
 	GameObject lastHit;

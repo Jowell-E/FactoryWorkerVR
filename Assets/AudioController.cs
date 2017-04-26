@@ -3,8 +3,9 @@ using System.Collections;
 
 public class AudioController : MonoBehaviour 
 {
-//	public AudioSource efxSource;                   //Drag a reference to the audio source which will play the sound effects.
-//	public AudioSource musicSource;                 //Drag a reference to the audio source which will play the music.
+	public AudioSource efxSource;                   //Drag a reference to the audio source which will play the sound effects.
+	public AudioSource musicSource;                 //Drag a reference to the audio source which will play the music.
+	public AudioSource cannonSource;
 	public static AudioController instance = null;     //Allows other scripts to call functions from SoundManager.             
 	public float lowPitchRange = .95f;              //The lowest a sound effect will be randomly pitched.
 	public float highPitchRange = 1.05f;            //The highest a sound effect will be randomly pitched.
@@ -31,6 +32,9 @@ public class AudioController : MonoBehaviour
 	//Used to play single sound clips.
 	public void PlaySingle( AudioClip clip, AudioSource source)
 	{
+		if (source == null) {
+			source = efxSource;
+		}
 		//Set the clip of our efxSource audio source to the clip passed in as a parameter.
 		source.clip = clip;
 
@@ -42,6 +46,9 @@ public class AudioController : MonoBehaviour
 	//RandomizeSfx chooses randomly between various audio clips and slightly changes their pitch.
 	public void RandomizeSfx (AudioSource source, params AudioClip[] clips)
 	{
+		if (source == null) {
+			source = efxSource;
+		}
 		//Generate a random number between 0 and the length of our array of clips passed in.
 		int randomIndex = Random.Range(0, clips.Length);
 

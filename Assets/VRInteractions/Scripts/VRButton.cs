@@ -24,29 +24,31 @@ public class VRButton : VRInteractable {
 	/// </summary>
 	List<VRGripper> ActiveControllers = new List<VRGripper> ();
 
-	void OnTriggerEnter(Collider _collider)
+	void OnTriggerStay(Collider _collider)
 	{	
-		if (Interactable == true && (_collider.name == "Switch" || _collider.tag == "Hand")) { // If the button hit's the contact switch it has been pressed
-			TriggerButton ();
+		if (Interactable == true && (_collider.tag == "Hand")) { // If the button hit's the contact switch it has been pressed
+			if (_collider.GetComponent<Valve.VR.InteractionSystem.Hand>().GetStandardInteractionButtonDown()) {
+				TriggerButton ();
+			}
 		}
 	}
 
-	void OnCollisionEnter(Collision _collision)
-	{
-		
-		if (Interactable == true && _collision.collider.name == "Switch") {
-			TriggerButton (); // If the button hit's the contact switch it has been pressed
-		} else if (_collision.rigidbody == null)
-			return;
-
-		// In this case we are dealingwith another physics object that has collided with the button
-
-		var gripper = _collision.rigidbody.GetComponent<VRGripper> ();
-
-
-		if (gripper != null) // If we find a gripper add it to our interacting list
-			ActiveControllers.Add (gripper);
-	}
+//	void OnCollisionEnter(Collision _collision)
+//	{
+//		
+//		if (Interactable == true && _collision.collider.name == "Switch") {
+//			TriggerButton (); // If the button hit's the contact switch it has been pressed
+//		} else if (_collision.rigidbody == null)
+//			return;
+//
+//		// In this case we are dealingwith another physics object that has collided with the button
+//
+//		var gripper = _collision.rigidbody.GetComponent<VRGripper> ();
+//
+//
+//		if (gripper != null) // If we find a gripper add it to our interacting list
+//			ActiveControllers.Add (gripper);
+//	}
 
 	void OnCollisionExit(Collision _collision)
 	{

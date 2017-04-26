@@ -31,7 +31,11 @@ public class GameController : MonoBehaviour {
 	public float scoreWrongBonus = .75f;
 	public float morale = 0;
 	// Use this for initialization
+
 	void Start () {
+		markStart = mark.transform.localPosition;
+		SetUpLevel ();
+
 		MakeObjectList ();
 		MakeSortingRules ();
 		UpdateInstructions ();
@@ -42,6 +46,54 @@ public class GameController : MonoBehaviour {
 	void WakeUp(){
 		SteamVR_Fade.View (Color.clear, 2f);
 	}
+
+	public AudioClip startGuy;
+	public AudioClip dialGuy;
+	public AudioClip themoreyouGuy;
+	public AudioClip todayyousortGuy;
+	public AudioClip intoAGuy;
+	public AudioClip[] objectsToSortGuy;
+	public AudioClip[] positiveRemarks;
+	public AudioClip[] negativeRemarks;
+	public AudioClip fallingSFX;
+
+	public int level = 0;
+	void SetUpLevel(){
+		if (level == 0) {
+			AudioController.instance.PlaySingle (startGuy, AudioController.instance.musicSource);
+			Invoke ("PlayLoudspeaker", startGuy.length);
+		}
+	}
+
+	void PlayLoudspeaker(){
+		if (level == 0) {
+			if (AudioController.instance.musicSource.clip == startGuy) {
+				AudioController.instance.PlaySingle (dialGuy, AudioController.instance.musicSource);
+				Invoke ("PlayLoudspeaker", dialGuy.length);
+			} else if (AudioController.instance.musicSource.clip == dialGuy) {
+				AudioController.instance.PlaySingle (themoreyouGuy, AudioController.instance.musicSource);
+				Invoke ("PlayLoudspeaker", themoreyouGuy.length);
+			} else if (AudioController.instance.musicSource.clip == themoreyouGuy){
+				AudioController.instance.PlaySingle(todayyousortGuy, AudioController.instance.musicSource);
+				Invoke ("PlayLoudspeaker", todayyousortGuy.length);
+			} else if (AudioController.instance.musicSource.clip == todayyousortGuy){
+				AudioController.instance.PlaySingle (intoAGuy, AudioController.instance.musicSource);
+				Invoke ("PlayLoudspeaker", intoAGuy.length + .1f);
+			} else if (AudioController.instance.musicSource.clip == intoAGuy){
+				StartCoroutine ("ReadObjects");
+			}
+		}
+	}
+
+	IEnumerator ReadObjects (){
+		yield return new WaitForSeconds (.5f);
+		for (int i = 0; i < objectsToSortGuy.Length; i++) {
+			AudioController.instance.PlaySingle (objectsToSortGuy [i], AudioController.instance.musicSource);
+
+			yield return new WaitForSeconds (1 + objectsToSortGuy [i].length);
+		}
+	}
+
 
 
 	public int amountOfObjects;
@@ -134,12 +186,20 @@ public class GameController : MonoBehaviour {
 			"Welcome to the Factory! \n" +
 			"Press the button to begin! \n"; 
 		for (int i = 0; i < containers.Length; i++) {
-			if (i == 0) {
-				text.text += "\n" + "Green" + ": "; 
-			} else if (i == 1) {
-				text.text += "\n" + "Red" + ": "; 
-			} else if (i == 2) {
-				text.text += "\n" + "Blue" + ": "; 
+			if (level == 0) {
+				if (i == 0) {
+					text.text += "\n" + "Light blue" + ": "; 
+				} else if (i == 1) {
+					text.text += "\n" + "Green" + ": "; 
+				}
+			}else{
+				if (i == 0) {
+					text.text += "\n" + "Green" + ": "; 
+				} else if (i == 1) {
+					text.text += "\n" + "Red" + ": "; 
+				} else if (i == 2) {
+					text.text += "\n" + "Blue" + ": "; 
+				}
 			}
 			SortDestroyer sort = containers[i].GetComponentInChildren<SortDestroyer> ();
 			if (sort.color != "") {
@@ -158,43 +218,59 @@ public class GameController : MonoBehaviour {
 	}
 
 	public GameObject mark;
+	Vector3 markStart;
 	// Update is called once per frame
 	void UpdateMorale () {
 		morale = Mathf.Clamp (morale, 0, 100f);
+
 		if (morale < 10) {
-			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (markStart.x, mark.transform.localPosition.y, mark.transform.localPosition.z);
 		} else if (morale < 20) {
-			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .07f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (markStart.x - .07f, mark.transform.localPosition.y, mark.transform.localPosition.z);
 		} else if (morale < 30) {
-			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .15f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (markStart.x - .15f, mark.transform.localPosition.y, mark.transform.localPosition.z);
 		} else if (morale < 40) {
-			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .23f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (markStart.x - .23f, mark.transform.localPosition.y, mark.transform.localPosition.z);
 		} else if (morale < 50) {
-			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .31f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (markStart.x - .31f, mark.transform.localPosition.y, mark.transform.localPosition.z);
 		} else if (morale < 60) {
-			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .39f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (markStart.x - .39f, mark.transform.localPosition.y, mark.transform.localPosition.z);
 		} else if (morale < 70) {
-			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .47f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (markStart.x - .47f, mark.transform.localPosition.y, mark.transform.localPosition.z);
 		} else if (morale < 80) {
-			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .55f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (markStart.x - .55f, mark.transform.localPosition.y, mark.transform.localPosition.z);
 		} else if (morale < 90) {
-			mark.transform.localPosition = new Vector3 (mark.transform.localPosition.x - .63f, 1.46f, -0.203f);
+			mark.transform.localPosition = new Vector3 (markStart.x - .63f, mark.transform.localPosition.y, mark.transform.localPosition.z);
 		}
 	}
 
 	int sortCount = 0;
+	int posCount = 0;
 	public void Sort(GameObject obj){
 		sortCount += 1;
+		posCount += 1;
+		if (posCount == 3) {
+			AudioController.instance.RandomizeSfx (AudioController.instance.musicSource, positiveRemarks);
+			posCount = 0;
+		}
 		score += scoreBonus;
+		morale += moraleBonus;
 		scoreDisplay.text = score.ToString();
 		UpdateMorale ();
 	}
 
 	int sortWrongCount = 0;
+	int negCount = 0;
+	public float moraleBonus;
 	public void SortedWrong (){
 		sortWrongCount += 1;
+		negCount += 1;
+		if (negCount == 3) {
+			AudioController.instance.RandomizeSfx (AudioController.instance.musicSource, negativeRemarks);
+			negCount = 0;
+		}
 		if (sortWrongCount == 20) {
-			morale -= .5f;
+			morale -= moraleBonus;
 			sortWrongCount = 0;
 		}
 		score -= scoreWrongBonus;

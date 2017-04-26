@@ -13,7 +13,7 @@ public class ButtonFunctions : MonoBehaviour {
 
 	public float waveTime;
 	public float fireRate;
-	float timeLimit;
+	public float timeLimit;
 	// Use this for initialization
 	void Start () {
 		shooting = false;
@@ -35,30 +35,50 @@ public class ButtonFunctions : MonoBehaviour {
 			if (timeLimit <= 0) {
 				shooting = false;
 				CancelInvoke ("ShootObject");
-				timeLimit = 60f;
+				timeLimit = 600f;
 			}
 		}
 
 
+
 	}
 
+	public ParticleSystem poof;
+	public AudioClip[] cannonFire;
 	public void StartShooting(){
 		if (!shooting) {
-			InvokeRepeating ("ShootObject", 0f, fireRate);
+			Invoke ("ShootObject", 2f);
 			shooting = true;
 			timeLimit = waveTime;
-		} else {
+		} 
+	}
+
+	public void StopShooting(){
+		if (shooting) {
 			shooting = false;
 			CancelInvoke ("ShootObject");
 			waveTime = timeLimit;
+//			if (poof.particleCount == 0) {
+//				poof.Stop ();
+//			}
 		}
 	}
 
+	public Transform spawnParent;
 	public void ShootObject(){
+		AudioController.instance.RandomizeSfx (null, cannonFire);
+//		if (!poof.isPlaying) {
+//			poof.Play ();
+//		}
 		int rand = Random.Range (0, GameController.Instance.objectToSort.Count);
 		GameObject obj = (GameObject)Instantiate (GameController.Instance.objectToSort[rand], pos, Quaternion.identity);
+		obj.transform.parent = spawnParent;
+		if (spawnParent.childCount >= 10) {
+			Destroy(spawnParent.GetChild (0).gameObject);
+		}
 		float force = Random.Range (minForce, maxForce);
 		obj.GetComponent<Rigidbody> ().velocity = new Vector3 (0, 1, 1) * force;
 		obj.name = GameController.Instance.objectToSort[rand].name;
+		Invoke ("ShootObject", fireRate);
 	}
 }
