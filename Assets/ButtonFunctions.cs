@@ -58,18 +58,14 @@ public class ButtonFunctions : MonoBehaviour {
 			shooting = false;
 			CancelInvoke ("ShootObject");
 			waveTime = timeLimit;
-//			if (poof.particleCount == 0) {
-//				poof.Stop ();
-//			}
+			poof.Stop ();
 		}
 	}
 
 	public Transform spawnParent;
 	public void ShootObject(){
 		AudioController.instance.RandomizeSfx (null, cannonFire);
-//		if (!poof.isPlaying) {
-//			poof.Play ();
-//		}
+		poof.Play ();
 		int rand = Random.Range (0, GameController.Instance.objectToSort.Count);
 		GameObject obj = (GameObject)Instantiate (GameController.Instance.objectToSort[rand], pos, Quaternion.identity);
 		obj.transform.parent = spawnParent;
