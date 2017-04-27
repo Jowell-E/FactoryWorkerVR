@@ -39,12 +39,12 @@ public class GameController : MonoBehaviour {
 		MakeObjectList ();
 		MakeSortingRules ();
 		UpdateInstructions ();
-//		SteamVR_Fade.View (Color.black, 1f);
-//		Invoke ("WakeUp", 1f);
+		SteamVR_Fade.View (Color.black, 0f);
+		Invoke ("WakeUp", 2.5f);
 	}
 
 	void WakeUp(){
-		SteamVR_Fade.View (Color.clear, 2f);
+		SteamVR_Fade.View (Color.clear, 5f);
 	}
 
 	public AudioClip startGuy;
@@ -62,26 +62,42 @@ public class GameController : MonoBehaviour {
 		if (level == 0) {
 			AudioController.instance.PlaySingle (startGuy, AudioController.instance.musicSource);
 			Invoke ("PlayLoudspeaker", startGuy.length);
+		} else {
+			PlayLoudspeaker ();
 		}
 	}
 
-	void PlayLoudspeaker(){
+	public AudioClip endBuzzer;
+	public void EndLevel(){
 		if (level == 0) {
-			if (AudioController.instance.musicSource.clip == startGuy) {
-				AudioController.instance.PlaySingle (dialGuy, AudioController.instance.musicSource);
-				Invoke ("PlayLoudspeaker", dialGuy.length);
-			} else if (AudioController.instance.musicSource.clip == dialGuy) {
-				AudioController.instance.PlaySingle (themoreyouGuy, AudioController.instance.musicSource);
-				Invoke ("PlayLoudspeaker", themoreyouGuy.length);
-			} else if (AudioController.instance.musicSource.clip == themoreyouGuy){
-				AudioController.instance.PlaySingle(todayyousortGuy, AudioController.instance.musicSource);
-				Invoke ("PlayLoudspeaker", todayyousortGuy.length);
-			} else if (AudioController.instance.musicSource.clip == todayyousortGuy){
-				AudioController.instance.PlaySingle (intoAGuy, AudioController.instance.musicSource);
-				Invoke ("PlayLoudspeaker", intoAGuy.length + .1f);
-			} else if (AudioController.instance.musicSource.clip == intoAGuy){
-				StartCoroutine ("ReadObjects");
-			}
+			AudioController.instance.PlaySingle (endBuzzer, null);
+			SteamVR_Fade.View (Color.black, 2.5f);
+			Invoke ("LoadNextScene", 5f);
+		}
+	}
+
+	void LoadNextScene(){
+		if (level == 0) {
+			UnityEngine.SceneManagement.SceneManager.LoadScene (1);
+			Destroy (GameController.instance.gameObject);
+		}
+	}
+	void PlayLoudspeaker(){
+		
+		AudioController.instance.PlaySingle (dialGuy, AudioController.instance.musicSource);
+		Invoke ("PlayLoudspeaker", dialGuy.length);
+
+		if (AudioController.instance.musicSource.clip == dialGuy) {
+			AudioController.instance.PlaySingle (themoreyouGuy, AudioController.instance.musicSource);
+			Invoke ("PlayLoudspeaker", themoreyouGuy.length);
+		} else if (AudioController.instance.musicSource.clip == themoreyouGuy){
+			AudioController.instance.PlaySingle(todayyousortGuy, AudioController.instance.musicSource);
+			Invoke ("PlayLoudspeaker", todayyousortGuy.length);
+		} else if (AudioController.instance.musicSource.clip == todayyousortGuy){
+			AudioController.instance.PlaySingle (intoAGuy, AudioController.instance.musicSource);
+			Invoke ("PlayLoudspeaker", intoAGuy.length + .1f);
+		} else if (AudioController.instance.musicSource.clip == intoAGuy){
+			StartCoroutine ("ReadObjects");
 		}
 	}
 
@@ -184,7 +200,7 @@ public class GameController : MonoBehaviour {
 		text.text = 
 			"Hello World, \n" +
 			"Welcome to the Factory! \n" +
-			"Press the button to begin! \n"; 
+			"Turn the dial to begin! \n"; 
 		for (int i = 0; i < containers.Length; i++) {
 			if (level == 0) {
 				if (i == 0) {
@@ -192,14 +208,14 @@ public class GameController : MonoBehaviour {
 				} else if (i == 1) {
 					text.text += "\n" + "Green" + ": "; 
 				}
-			}else{
+			}else if (level == 1){
 				if (i == 0) {
 					text.text += "\n" + "Green" + ": "; 
 				} else if (i == 1) {
-					text.text += "\n" + "Red" + ": "; 
+					text.text += "\n" + "Purple" + ": "; 
 				} else if (i == 2) {
-					text.text += "\n" + "Blue" + ": "; 
-				}
+					text.text += "\n" + "White" + ": "; 
+				} 
 			}
 			SortDestroyer sort = containers[i].GetComponentInChildren<SortDestroyer> ();
 			if (sort.color != "") {

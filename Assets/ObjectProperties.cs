@@ -5,7 +5,7 @@ using UnityEngine;
 public class ObjectProperties : MonoBehaviour {
 
 	public string color;
-	public string obj;
+	public string[] obj;
 	public string audioName;
 	public AudioClip audioClip;
 	public AudioClip[] audioClips;

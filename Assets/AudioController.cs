@@ -62,6 +62,8 @@ public class AudioController : MonoBehaviour
 		source.clip = clips[randomIndex];
 
 		//Play the clip.
-		source.Play();
+		if (source.gameObject.activeInHierarchy) {
+			source.Play ();
+		}
 	}
 }

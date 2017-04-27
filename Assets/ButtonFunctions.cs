@@ -36,6 +36,7 @@ public class ButtonFunctions : MonoBehaviour {
 				shooting = false;
 				CancelInvoke ("ShootObject");
 				timeLimit = 600f;
+				GameController.Instance.EndLevel ();
 			}
 		}
 

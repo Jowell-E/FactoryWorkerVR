@@ -36,10 +36,12 @@ public class SortDestroyer : MonoBehaviour {
 				}
 			}
 			if (obj != ""){
-				if (other.gameObject.GetComponent<ObjectProperties> ().obj == obj) {
-				Destroy (other.gameObject);
-				GameController.Instance.Sort (other.gameObject);
-				return;
+				foreach (string property in other.gameObject.GetComponent<ObjectProperties>().obj){
+					if (property == obj) {
+						Destroy (other.gameObject);
+						GameController.Instance.Sort (other.gameObject);
+						return;
+					}
 				}
 			}
 			if (defective != false){
