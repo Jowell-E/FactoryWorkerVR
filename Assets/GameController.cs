@@ -69,15 +69,18 @@ public class GameController : MonoBehaviour {
 
 	public AudioClip endBuzzer;
 	public void EndLevel(){
-		if (level == 0) {
-			AudioController.instance.PlaySingle (endBuzzer, null);
-			SteamVR_Fade.View (Color.black, 2.5f);
-			Invoke ("LoadNextScene", 5f);
-		}
+		AudioController.instance.PlaySingle (endBuzzer, null);
+		SteamVR_Fade.View (Color.black, 2.5f);
+		Invoke ("LoadNextScene", 5f);
 	}
 
+	bool fired = false;
 	void LoadNextScene(){
-		if (level == 0) {
+		if (fired) {
+			UnityEngine.SceneManagement.SceneManager.LoadScene (2);
+			Destroy (GameController.instance.gameObject);
+		}
+		else if (level == 0) {
 			UnityEngine.SceneManagement.SceneManager.LoadScene (1);
 			Destroy (GameController.instance.gameObject);
 		}
@@ -257,11 +260,20 @@ public class GameController : MonoBehaviour {
 			mark.transform.localPosition = new Vector3 (markStart.x - .55f, mark.transform.localPosition.y, mark.transform.localPosition.z);
 		} else if (morale < 90) {
 			mark.transform.localPosition = new Vector3 (markStart.x - .63f, mark.transform.localPosition.y, mark.transform.localPosition.z);
+		} else {
+			if (score == 0) {
+				EndLevel ();
+				fired = true;
+			}
 		}
 	}
 
 	int sortCount = 0;
 	int posCount = 0;
+	public int sortPerMorale;
+	public List<GameObject> money = new List<GameObject>();
+	public GameObject moneyPrefab;
+	public Vector3 moneyPos;
 	public void Sort(GameObject obj){
 		sortCount += 1;
 		posCount += 1;
@@ -270,26 +282,40 @@ public class GameController : MonoBehaviour {
 			posCount = 0;
 		}
 		score += scoreBonus;
-		morale += moraleBonus;
+		if (score % 1 == 0) {
+			GameObject bill = (GameObject)Instantiate (moneyPrefab, moneyPos, Quaternion.identity);
+			money.Add (bill);
+		}
+		if (sortCount >= sortPerMorale) {
+			morale += moraleBonus;
+			sortCount = 0;
+		}
 		scoreDisplay.text = score.ToString();
 		UpdateMorale ();
 	}
 
-	int sortWrongCount = 0;
+//	int sortWrongCount = 0;
 	int negCount = 0;
 	public float moraleBonus;
 	public void SortedWrong (){
-		sortWrongCount += 1;
+//		sortWrongCount += 1;
 		negCount += 1;
 		if (negCount == 3) {
 			AudioController.instance.RandomizeSfx (AudioController.instance.musicSource, negativeRemarks);
 			negCount = 0;
 		}
-		if (sortWrongCount == 20) {
-			morale -= moraleBonus;
-			sortWrongCount = 0;
-		}
+//		if (sortWrongCount == 20) {
+//			morale -= moraleBonus;
+//			sortWrongCount = 0;
+//		}
 		score -= scoreWrongBonus;
+		if (score % 1 == 0) {
+			if (money.Count > 0) {
+				money [money.Count - 1].GetComponentInChildren<BoxCollider> ().enabled = false;
+				Destroy (money [money.Count - 1], 5f);
+				money.RemoveAt (money.Count - 1);
+			}
+		}
 		scoreDisplay.text = score.ToString ();
 		UpdateMorale ();
 	}
