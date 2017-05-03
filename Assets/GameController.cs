@@ -85,21 +85,25 @@ public class GameController : MonoBehaviour {
 			Destroy (GameController.instance.gameObject);
 		}
 	}
+	bool startedDialogue = false;
 	void PlayLoudspeaker(){
-		
-		AudioController.instance.PlaySingle (dialGuy, AudioController.instance.musicSource);
-		Invoke ("PlayLoudspeaker", dialGuy.length);
-
-		if (AudioController.instance.musicSource.clip == dialGuy) {
+		if (!startedDialogue) {
+			AudioController.instance.PlaySingle (dialGuy, AudioController.instance.musicSource);
+			Invoke ("PlayLoudspeaker", dialGuy.length);
+			startedDialogue = true;
+		}
+		else if (AudioController.instance.musicSource.clip == dialGuy) {
 			AudioController.instance.PlaySingle (themoreyouGuy, AudioController.instance.musicSource);
 			Invoke ("PlayLoudspeaker", themoreyouGuy.length);
 		} else if (AudioController.instance.musicSource.clip == themoreyouGuy){
 			AudioController.instance.PlaySingle(todayyousortGuy, AudioController.instance.musicSource);
 			Invoke ("PlayLoudspeaker", todayyousortGuy.length);
-		} else if (AudioController.instance.musicSource.clip == todayyousortGuy){
-			AudioController.instance.PlaySingle (intoAGuy, AudioController.instance.musicSource);
-			Invoke ("PlayLoudspeaker", intoAGuy.length + .1f);
-		} else if (AudioController.instance.musicSource.clip == intoAGuy){
+		}
+//		else if (AudioController.instance.musicSource.clip == todayyousortGuy){
+//			AudioController.instance.PlaySingle (intoAGuy, AudioController.instance.musicSource);
+//			Invoke ("PlayLoudspeaker", intoAGuy.length + .1f);
+//		}
+		else if (AudioController.instance.musicSource.clip == todayyousortGuy){
 			StartCoroutine ("ReadObjects");
 		}
 	}
@@ -213,11 +217,11 @@ public class GameController : MonoBehaviour {
 				}
 			}else if (level == 1){
 				if (i == 0) {
-					text.text += "\n" + "Green" + ": "; 
-				} else if (i == 1) {
-					text.text += "\n" + "Purple" + ": "; 
-				} else if (i == 2) {
 					text.text += "\n" + "White" + ": "; 
+				} else if (i == 1) {
+					text.text += "\n" + "Green" + ": "; 
+				} else if (i == 2) {
+					text.text += "\n" + "Purple" + ": "; 
 				} 
 			}
 			SortDestroyer sort = containers[i].GetComponentInChildren<SortDestroyer> ();
@@ -311,7 +315,7 @@ public class GameController : MonoBehaviour {
 		score -= scoreWrongBonus;
 		if (score % 1 == 0) {
 			if (money.Count > 0) {
-				money [money.Count - 1].GetComponentInChildren<BoxCollider> ().enabled = false;
+				money [money.Count - 1].GetComponentInChildren<MeshCollider> ().enabled = false;
 				Destroy (money [money.Count - 1], 5f);
 				money.RemoveAt (money.Count - 1);
 			}
